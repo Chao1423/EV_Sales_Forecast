@@ -10,7 +10,6 @@ library(readxl)
 #Load Chinese Vehicle Monthly Sales by Types
 CV_Sales_Monthly <- read_xlsx("Data/EV_China_by_Powertrain.xlsx")
 
-
 #Clean data by replacing N/As by 0
 CV_Sales_Monthly <- CV_Sales_Monthly[,-1]|>
   replace_na(list(EV = 0, FCV = 0, HV = 0, ICE = 0, `Mild HV` = 0, `N/A` = 0, PHV = 0))
@@ -34,22 +33,22 @@ ggplot(CV_Sales_Monthly, aes(x = date)) +
        color = "Vehicle Type") +
   theme_minimal()
 
-
-
-#Let's divide the whole market into New Energy Vehicles and Traditional Power Vehicles
+#Let's divide the whole market into New Energy Vehicles and Traditional Power Vehicle (ICE,HV,and Others)
 
 EV_Sales_Monthly <- data.frame(
   date = CV_Sales_Monthly$date,  
-  EV = rowSums(CV_Sales_Monthly[, c(2, 3, 4, 6, 8)]),
-  TV = rowSums(CV_Sales_Monthly[, c(5,7)]),
+  EV = rowSums(CV_Sales_Monthly[, c(2, 3, 6, 8)]),
+  TV = rowSums(CV_Sales_Monthly[, c(4, 5, 7)]),
   Total_sales = rowSums(CV_Sales_Monthly[,-1])
 )
 
 EV_Sales_Monthly <- EV_Sales_Monthly |> 
-  #filter(EV > 5000) |>
+  filter(date >= as.Date("2010-01-01")) |>
   mutate(date = yearmonth(date)) |>
   as_tsibble(index = date) |> 
   fill_gaps()
+
+write.csv(EV_Sales_Monthly, "Data/EV_TS_Data.csv")
 
 EV_Sales_Long <- EV_Sales_Monthly |> 
   pivot_longer(
@@ -95,13 +94,13 @@ TS_decomp <- EV_Sales_Monthly |>
   components() |>
   autoplot()
 
-EV_decomp
+EV_decomp #seasonality observed
 TV_decomp
-TS_decomp
+TS_decomp #strong seasonality observed
 
 #AutoCorrelation Function
 EV_Sales_Monthly |>
-  ACF(TV, lag_max = 24) |>  
+  ACF(EV, lag_max = 24) |>  
   autoplot() +
   labs(
     title = "ACF of EV Sales",
@@ -110,7 +109,10 @@ EV_Sales_Monthly |>
   ) +
   theme_minimal()
 
-#Seasonal Strength
+#Seasonal Plot
+EV_Sales_Monthly |> gg_season(EV)
+
+#Seasonal Strength (Optional)
 seasonal_strength <- function(data) {
   decomposition <- data |> model(STL(TV ~ trend(window = 13) + season(window = "periodic")))
   components <- decomposition |> components()
@@ -120,4 +122,4 @@ seasonal_strength <- function(data) {
   return(F_s)
 }
 
-seasonal_strength(EV_Sales_Monthly) #Not strong
+seasonal_strength(EV_Sales_Monthly) #Not strong here might due to very strong trend
