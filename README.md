@@ -35,8 +35,8 @@ for (pkg in packages) {
 ```
 
 ### Initializing and running
-To start running the project, please download the file "data" from our project Google drive and put it in the Rproject file.
-Run simutaniously from 00--03
+To start running the project, please download the file "data" from our project Google drive and put it in the "Data" file in your local Rproject file.
+Run simutaniously from 00--03.
 
 
 ## Contributing
