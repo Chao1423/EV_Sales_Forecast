@@ -145,4 +145,4 @@ ev_ts |>
   Arima(order=c(1,1,4),seasonal=c(1,2,2)) |>
   forecast() |>
   autoplot() +
-  ylab("EV Sales") + xlab("month")
+  ylab("EV Sales") + xlab("year")
