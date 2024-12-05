@@ -6,7 +6,7 @@ EV_Yearly_China <- EV_Yearly |>
   group_by(powertrain,parameter,year,unit) |>
   summarise(total_value = sum(value), .groups = 'drop')
 
-View(EV_Yearly_China)
+EV_Yearly_China
 
 EV_Sales_Yearly <- EV_Yearly_China |>
   filter(grepl("EV sales", parameter) & grepl("Vehicles", unit)) |>
@@ -39,7 +39,7 @@ EV_charging_points_yearly <- EV_charging_points |>
 
 #2. Grand Economics Indicators
 
-GDP_Yearly <- read_csv("Data/Annual GDP.csv",skip = 2)
+GDP_Yearly <- read.csv("Data/Annual GDP.csv",skip = 2)
 
 gdp_per_capita <- GDP_Yearly |>
   pivot_longer(
@@ -49,11 +49,11 @@ gdp_per_capita <- GDP_Yearly |>
   ) |>
   filter(Indicators == "Per Capita GDP(yuan)") |>
   select(-Indicators) |>  
-  mutate(year = as.numeric(year)) |>
+  mutate(year = as.numeric(gsub("^X(\\d)", "\\1", year))) |>
   arrange(year)
 
 
-CCI <- read_csv("Data/Consumer_Confidence_Index.csv")
+CCI <- read.csv("Data/Consumer_Confidence_Index.csv")
 
 CCI <- CCI[,c(3,4)] |>
   mutate(DateTime = as.Date(DateTime, format = "%Y-%m-%d"))  |>
@@ -62,7 +62,7 @@ CCI <- CCI[,c(3,4)] |>
   summarise(value = mean(Close, na.rm = TRUE)) |>
   filter (year >= 2014)
 
-Oil_price <- read_csv("Data/Gasoline Price.csv") 
+Oil_price <- read.csv("Data/Gasoline Price.csv") 
 
 Oil_price <- Oil_price[,c(3,4)] |>
   mutate(DateTime = as.Date(DateTime, format = "%Y-%m-%d"))  |>

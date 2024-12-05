@@ -45,11 +45,11 @@ Box.test(EV_Sales_Monthly$EV |> diff(), lag = 12, type = "Ljung-Box") # p-value 
 # KPSS Method and Augmented Dickey-Fuller Test
 library(urca)
 library(tseries)
-EV_Sales_Monthly$EV %>% ur.kpss() %>% summary()
+EV_Sales_Monthly$EV |> ur.kpss() |> summary()
 # Value of test-statistic is: 2.3071 -- Not Stationary
-EV_Sales_Monthly$EV %>% diff() %>% ur.kpss() %>% summary()
+EV_Sales_Monthly$EV %>% diff() |> ur.kpss() |> summary()
 # Value of test-statistic is: 0.7371  -- Weak Stationary? To be checked in adf
-EV_Sales_Monthly$EV %>% diff() %>% diff() %>% ur.kpss() %>% summary()
+EV_Sales_Monthly$EV |> diff() |> diff() |> ur.kpss() |> summary()
 # Value of test-statistic is: 0.0504  -- Good Enough
 
 adf.test(EV_Sales_Monthly$EV)

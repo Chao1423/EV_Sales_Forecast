@@ -68,8 +68,7 @@ autoplot(EV_Sales_Long, Sales) +
   ) +
   theme_minimal() 
 
-# Time Series Decomposition (STL)
-
+#Time Series Decomposition (STL)
 EV_decomp <- EV_Sales_Monthly |>
   model(
     STL(EV ~ trend(window = 13) +
