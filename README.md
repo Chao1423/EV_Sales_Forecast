@@ -2,7 +2,7 @@
 # **EV_Sales_Forecast**
 
 ## Overview
-This project analyzes and forecasts **electronic vehicles according to the data from International Energy Association(IEA)** using R. It includes data preprocessing, visualization, and statistical modeling, with a focus on time series analysis and predictive modeling.
+This project analyzes and forecasts **electronic vehicles according to the data from International Energy Association(IEA), marklines.com, and National Statstic Bureau of China** using R. It includes data preprocessing, visualization, and statistical modeling, with a focus on time series analysis and predictive modeling.
 
 ---
 
@@ -35,8 +35,9 @@ for (pkg in packages) {
 ```
 
 ### Initializing and running
-To start running the project, please download the file "data" from our project Google drive and put it in the "Data" file in your local Rproject file.
-Run simutaniously from 00--03.
+- To start running the project, please download the file "data" from our project Google drive and put it in the "Data" file in your local Rproject file.
+- To run the ARIMA model, process the data using 00 and 00(1). Go through the 02 file because "ev_ts" variable here will be needed. Then running 03 is recommended since ARIMA in 03 used logged data.
+- To run the TSLM model, process the data using 01 for yearly panel data and 01(1) for quarterly panel data. Then run 04 for TSLM models for forecasting both.
 
 
 ## Contributing
